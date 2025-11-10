@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    const BASE_URL = "http://localhost:8800"
+    let authToken = ""
+async function api(path, options = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    ...options.headers,
+  };
+
+  const response = await fetch(`${BASE_URL}${path}`, {
+    ...options,
+    headers,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      `Request failed: ${response.status} ${response.statusText} - ${errorText}`
+    );
+  }
+
+  // Try JSON, fallback to text
+  console.log(response)
+  try {
+    return await response.json();
+  } catch {
+    return await response.text();
+  }
+}
+
+
+</script>
+
+<body>
+    <form action="POST" style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9; font-family: Arial, sans-serif;" id="registerForm">
+  <h2 style="text-align: center; margin-bottom: 20px;">Register</h2>
+
+  <input type="text" name="username" id="username" placeholder="Username" required
+         style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+
+  <input type="email" name="email" id="email" placeholder="Email" required
+         style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+
+  <input type="password" name="password" placeholder="Password" required
+         style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+
+  <input type="text" name="name" placeholder="Full Name" required
+         style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+
+  <select name="role" id="role" required
+          style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc;">
+    <option value="">Select Role</option>
+    <option value="project_manager">Project Manager</option>
+    <option value="team_member">Team Member</option>
+  </select>
+
+  <input type="text" name="department" id="department" placeholder="Department" required
+         style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc;">
+
+  <input type="submit" value="Submit"
+         style="width: 100%; padding: 12px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+</form>
+
+    
+</body>
+<script>
+const form = document.getElementById("registerForm");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault(); // prevent page reload
+
+  const formData = {
+    username: form.username.value,
+    email: form.email.value,
+    password: form.password.value,
+    name: form.name.value,
+    role: form.role.value,
+    department: form.department.value,
+  };
+
+  try {
+    const response = await api("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
+    console.log("Success:", response);
+    alert("Registration successful!");
+  } catch (err) {
+    console.error("Error:", err);
+    alert(`Registration failed: ${err.message}`);
+  }
+});
+</script>
+</html>

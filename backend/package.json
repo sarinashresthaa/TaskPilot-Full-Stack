@@ -1,0 +1,49 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "nodemon server.js",
+    "start:prod": "NODE_ENV=production node server.js",
+    "setup": "node scripts/createInitialAdmin.js",
+    "setup:prod": "NODE_ENV=production node scripts/createInitialAdmin.js",
+    "clean": "rm -rf setup-*.js",
+    "test": "node test/test-runner.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "axios": "^1.11.0",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^9.5.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^6.3.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/setup.js"
+    ],
+    "testTimeout": 30000,
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/test/**",
+      "!server.js",
+      "!scripts/**"
+    ],
+    "coverageDirectory": "coverage",
+    "verbose": true
+  }
+}
