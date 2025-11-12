@@ -3,11 +3,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const authAPI = axios.create({
-  baseURL: "http://localhost:8800/api/",
+  baseURL: "https://taskpilot-full-stack.onrender.com/api/",
 });
 
 const api = axios.create({
-  baseURL: "http://localhost:8800/api/",
+  baseURL: "https://taskpilot-full-stack.onrender.com/api/",
 });
 
 export const getStoredToken = () => {
